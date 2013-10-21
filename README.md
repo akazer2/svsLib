@@ -26,8 +26,7 @@ file accordingly.
 
 ###svsLibrary:
 
-1.searchDirectory(std::vector<string> *imageLocations, const char 
-directoryName);
+1.```searchDirectory(std::vector<string> *imageLocations, const char* directoryName);```
   * The search directory function takes a pointer to a vector of string and 
 a directory name as a parameter.
   * It recursively walks down the file system starting at the provided 
@@ -36,13 +35,12 @@ directory and adds an svs files it finds to the vector.
 svs image which can be passed to any other function in the class for 
 processing.
 
-2. loadImage(std::string &fileName);
+2.```loadImage(std::string &fileName);```
   * loadImage simply takes in the full path for an image and returns a 
 pointer to the openslide_t handle for the image.
   * This handle is what is passed to other function for further processing.
 
-3.partition_no_overlap(std::string filename, openslide_t *osr, int x, int y, int w, 
-int h, int level);
+3.```partition_no_overlap(std::string filename, openslide_t *osr, int x, int y, int w, int h, int level);```
   * filename :- Write Directory
   * osr :- Image handle
   * x, y :- Start coordinates
@@ -56,8 +54,7 @@ the user and at a user defined zoom level.
   *The extraction of each tile is done by called the extract_region 
 function.
 
-4.partition_overlap(std::string filename, openslide t*osr, int x, int y, int w, int h, 
-int ow, int oh, int level)
+4.```partition_overlap(std::string filename, openslide t*osr, int x, int y, int w, int h, int ow, int oh, int level)```
   * filename :- Write Directory
   * osr :- Image handle
   * x, y :- Start coordinates
@@ -69,8 +66,7 @@ The only difference is that the user can provide two additional
 parameters that define a region that overlaps on each tile.
   * The overlapped tiling can be useful for further analysis that requires 
 identification of boundaries.
-5.extract_region(std::string filename, openslide_t *osr, int x, int y, int w, int h, 
-int level)
+5.```extract_region(std::string filename, openslide_t *osr, int x, int y, int w, int h, int level)```
   * filename :- Write location
   * osr :- Image handle
   * x, y :- Start coordinates
@@ -135,8 +131,6 @@ successfully identify the SVS files and iteration through the vector gave opensl
 handles for each one of them. I verified that the handles were valid by extracted 
 metadata from the images using the handle. Due to time constraints I was unable to 
 run the tilers on more than 2 - 3 images at a time.
-
-
 
 ####Data
 
