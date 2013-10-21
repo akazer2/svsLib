@@ -66,6 +66,7 @@ The only difference is that the user can provide two additional
 parameters that define a region that overlaps on each tile.
   * The overlapped tiling can be useful for further analysis that requires 
 identification of boundaries.
+
 5.```extract_region(std::string filename, openslide_t *osr, int x, int y, int w, int h, int level)```
   * filename :- Write location
   * osr :- Image handle
@@ -79,15 +80,17 @@ then written in tiff format.
 
 ####Driver.cpp
 
-1.Driver.cpp is simple driver program that consumes svsLibrary and 
+1. Driver.cpp is simple driver program that consumes svsLibrary and 
 demonstrates its features. 
-2.The driver simply searches through a  directory that is provided by the user 
+
+2.  driver simply searches through a directory that is provided by the user 
 and creates a vector of SVS files.
-3.Its then provides examples on how to use the functions provided in the 
+
+3. Its then provides examples on how to use the functions provided in the 
 library.
 
 ####Challenges
-1.X - Y coordinate conversion
+1. X - Y coordinate conversion
   * The openslide_read_region function takes in x,y coordinates relative 
 to zoom level 0.
   * This means that while tiling the image at a zoom level other than zero 
@@ -100,7 +103,7 @@ you to also obtain a downsampling factor for a given zoom level. The
 downsampling factor can be used to off set the x, y coordinates 
 appropriately.
 
-2.Writing the images to TIFF
+2. Writing the images to TIFF
   * A problem I ran into while writing the images was that determining 
 the order of the channels and determining how many channels were 
 present.
