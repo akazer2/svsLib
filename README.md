@@ -4,9 +4,9 @@
 ###Functionality:
 The class is made of tools that leverage two popular image processing libraries. 
 Using functions from both Openslide and Libtiff the class can quickly extract regions 
-from a given svs image. It can also tile the image given user defined tile size and zoom 
+from a given svs,vms,ndpi,tif,mrxs image. It can also tile the image given user defined tile size and zoom 
 level. In addition to this the image provides for functionality that recursively 
-searches through a file system to locate and identify svs images and perform 
+searches through a file system to locate and identify these images and perform 
 processing on them.
 
 ###Source:
