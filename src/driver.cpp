@@ -12,7 +12,7 @@ int main(int argc, char **argv)
     std::vector<std::string> *imageLocations;
     imageLocations = new std::vector<std::string>;
     
-    const char *directoryName = "/home/akazerouni/Desktop/MIA/image/ndpi";
+    const char *directoryName = "/home/akazerouni/Desktop/MIA/image";
     std::string output_path = "/home/akazerouni/Desktop/MIA/";
     
     tilerlib.searchDirectory(imageLocations,directoryName);
