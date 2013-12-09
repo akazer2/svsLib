@@ -17,22 +17,23 @@ file accordingly.
 ###Dependencies:
 1.	Openslide
   1.	[http://openslide.org/download/]
-  2.	3.3 or newer
+  2.	3.3 or newer. [Install from unstable master for NDPI support]
 2.	Libtiff
   1.	[http://download.osgeo.org/libtiff/]
-  2.	4.0 or newer [5.0 is required for big tiffs i.e. over 2gb]
+  2.	4.0 or newer [5.0 is required for big tiffs i.e. over 4gb]
 3.	Openjpeg
 4.	Glib-2
+5.	gdk-pixbuf2 [Needed for unstable version of Openslide for NDPI support]
 
 ###svsLibrary:
 
 1.```searchDirectory(std::vector<string> *imageLocations, const char* directoryName);```
-  * The search directory function takes a pointer to a vector of string and 
+  * The search directory function takes a pointer to a vector of strings and 
 a directory name as a parameter.
   * It recursively walks down the file system starting at the provided 
-directory and adds an svs files it finds to the vector.
+directory and adds any svs,ndpi,vms,tif, and mrxs files it finds to the vector.
   * This vector can later be iterated through to obtain handles for each 
-svs image which can be passed to any other function in the class for 
+ image which can be passed to any other function in the class for 
 processing.
 
 2.```loadImage(std::string &fileName);```
@@ -51,7 +52,7 @@ provided by the user. The tiles are of width and height provided by
 the user and at a user defined zoom level.
   *There is no overlap between the tiles.
   *Each tile is written to a directory in tiff format.
-  *The extraction of each tile is done by called the extract_region 
+  *The extraction of each tile is done by calling the extract_region 
 function.
 
 4.```partition_overlap(std::string filename, openslide t*osr, int x, int y, int w, int h, int ow, int oh, int level)```
@@ -78,13 +79,26 @@ coordinate pertains to zoom level 0. The image region is extracted and
 then written in tiff format.
   * The Libtiff library is used for the writing of the images.
 
+6.```ndpi_partition__no_overlap(int mag, int w, int h, int overlap_percent, std::string image path)```
+  * mag :- Magnification level
+  * w, h :- Tile width and height
+  * image_path :- Image path
+  * This function is provided for users using the latest stable version of openslide. It makes a system call to the ndpisplit binaries that will tile the ndpi image at a given magnification with tiles of size w and h. It is highly recommended that if ndpi images need processing, the master branch from the openslide git be used.
+
+7.```ndpi_partition_no_overlap(int mag, int w, int h, int overlap_percent, std::string image path)```
+  * mag :- Magnification level
+  * w, h :- Tile width and height
+  * overlap_percent :- Percentage of overlap between tiles
+  * image_path :- Image path
+  * Adds overlap between tiles to ndpi_partition_no_overlap
+
 ####Driver.cpp
 
-1. Driver.cpp is simple driver program that consumes svsLibrary and 
+1. Driver.cpp is simple driver program that consumes the tilerLibrary and 
 demonstrates its features. 
 
 2.  driver simply searches through a directory that is provided by the user 
-and creates a vector of SVS files.
+and creates a vector of files.
 
 3. Its then provides examples on how to use the functions provided in the 
 library.
@@ -123,20 +137,29 @@ region had only 3 regions which results in the TIFFs being in gray
 scale. After further inquiry I realized that the TIFF "out" object could 
 be configured to skip over the empty alpha channel.
 
+3. Reading NDPI images
+  * NDPI is a propriety format with an internal structure that includes both a broken tiff and a broken jpeg architecture. The sdk to process these images requires obtaining a license and a non-disclosure agreement. Trying to work without this require the reverse engineering of the format, which many have tried and failed at [within are department as well]. The only two libraries I could find that support ndpi is the master branch of openslide and NDPITools. I have implemented all functionality using openslide and partial tiling functionality using NDPITools
+
 ####Runs
 
 I ran the code in driver.cpp and to test the library. Both the overlapping and non 
-overlapping tilers were run on a single SVS file and I visually inspected the TIFFs to 
+overlapping tilers were run on a single SVS, VMS, NDPI, TIF and MRXS files and I visually inspected the TIFFs to 
 ensure that the entire image was being covered in the tiles. In addition to this I ran 
 the search directory function on /data/images on my research machine that has a 
 network of directories full of SVS, tiff and dzi images. The function was able to 
-successfully identify the SVS files and iteration through the vector gave openslide_t 
+successfully identify the SVS files and iteration through the vector giving openslide_t 
 handles for each one of them. I verified that the handles were valid by extracted 
 metadata from the images using the handle. Due to time constraints I was unable to 
-run the tilers on more than 2 - 3 images at a time.
+run the tiler on more than 2 - 3 images at a time.
+
+Additionally I created a directory structure that had VMS, SVS, NDPI, TIF and MRXS files present. The directory walk down was able to identify each one of these files and tile them.
 
 ####Data
 
 1.Tiles I have saved from test runs
   * The tiffs from tiling without overlap at zoom level 1 and 2 of an SVS
   * The tiff from tilling with overlap at zoom level 1 for the same SVS.
+  * The tiffs from tiling without overlap at zoom level 2 for a vms.
+  * The tiffs from tiling without overlap at zoom level 2 for a ndpi.
+  * The tiffs from tiling without overlap at zoom level 2 for a tif.
+  * The tiffs from tiling without overlap at zoom level 2 for a mrxs.
