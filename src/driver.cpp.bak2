@@ -1,0 +1,17 @@
+#include <cstdlib>
+#include <iostream>
+#include <openslide.h>
+#include "svsLibrary.hpp"
+
+using namespace std;
+
+int main(int argc, char **argv)
+{
+    const char* fileName = "image/CMU-1.ndpi";
+    cout << "Version: " << openslide_get_version() << endl;
+
+    openslide_t *osr = openslide_open(fileName);
+    cout << osr << endl;
+    int32_t levels = openslide_get_level_count(osr);
+    cout << levels << endl;
+}
