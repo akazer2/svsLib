@@ -2,7 +2,7 @@
 ##Ameen Kazerouni
 
 ###Functionality:
-The class is made of tools that leverage two popular image processing libraries. 
+The library leverages two popular image processing libraries. 
 Using functions from both Openslide and Libtiff the class can quickly extract regions 
 from a given svs,vms,ndpi,tif,mrxs image. It can also tile the image given user defined tile size and zoom 
 level. In addition to this the image provides for functionality that recursively 
